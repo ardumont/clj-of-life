@@ -13,11 +13,6 @@
 (def alive? {1 true
              0 false})
 
-(comment "first implementation"
-  (defn neighbours-coord "Compute the neighbours' coordinates"
-    [y x]
-    (for [b [-1 0 1] a [-1 0 1] :let [y+ (+ b y) x+ (+ a x)] :when (not= [y+ x+] [y x])] [y+ x+])))
-
 (defn neighbours-coord "Compute the neighbours' coordinate"
   [y x]
   (let [x- (- x 1)
