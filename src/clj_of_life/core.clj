@@ -24,9 +24,16 @@
   (neighbours-coord 0 0) => [[-1 -1] [-1 0] [-1 1] [0 -1] [0 1] [1 -1] [1 0] [1 1]]
   (neighbours-coord 1 1) => [[0 0] [0 1] [0 2] [1 0] [1 2] [2 0] [2 1] [2 2]])
 
+(defn state "Returns the state of the cell"
+  [u y x]
+  (get-in u [y x]))
+
+(fact "state"
+  (state [[0 1 0]] 0 1) => 1)
+
 (defn neighbours-state "Compute the state of the neigbours of the cell with coord [y x]"
   [u y x]
-  (map #(get-in u %) (neighbours-coord y x)))
+  (map (fn [[y x]] (state u y x)) (neighbours-coord y x)))
 
 (fact
   (neighbours-state [[0 1 0]
@@ -39,7 +46,7 @@
 
 (defn next-state-cell "Given a universe u and a cell with coordinate y x, compute the next state of the cell [y x] in the universe u"
   [u y x]
-  (let [cs (get-in u [y x])
+  (let [cs (state u y x)
         nb-nb (count (filter alive? (neighbours-state u y x)))]
     ((state-which-renders-alive cs) nb-nb 0)))
 
@@ -136,7 +143,7 @@
         offset 29];; for the border drawn in gnome (do not work under stumpwm)
     (doseq [x (range (count u))
             y (range (count u))]
-      (let [state (get-in u [y x])]
+      (let [state (state u y x)]
         ;; clear the painting
         (.setColor gfx blank-color)
         (.fillRect gfx
