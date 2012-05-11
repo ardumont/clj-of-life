@@ -10,8 +10,7 @@
 ;; - une cellule vivant ayant plus de 3 voisins meurt
 ;; - une cellule morte ayant 3 voisins devient vivante
 
-(def alive? {1 true
-             0 false})
+(def alive? {1 true})
 
 (defn neighbours-coord "Compute the neighbours' coordinate"
   [y x]
@@ -145,7 +144,7 @@
                    (+ offset (* *size-cell y))
                    *size-cell *size-cell)
         ;; optimisation for display
-        (when (= 1 state)
+        (when (alive? state)
           ;; draw the new state if needed
           (.setColor gfx (color state))
           (.fillRect gfx
