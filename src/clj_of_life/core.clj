@@ -35,9 +35,31 @@
         (<= 2 nb-neighbours 3) 1
         :else                  0))
 
+(fact
+  (cell-read {:state 1
+              :nb-neighbours 1}) => 0
+  (cell-read {:state 1
+              :nb-neighbours 2}) => 1
+  (cell-read {:state 1
+              :nb-neighbours 3}) => 1
+  (cell-read {:state 1
+              :nb-neighbours 4}) => 0)
+
 ;; cell dead
 (defmethod cell-read 0 [{:keys [nb-neighbours]}]
       (if (= 3 nb-neighbours) 1 0))
+
+(fact
+  (cell-read {:state 0
+              :nb-neighbours 0}) => 0
+  (cell-read {:state 0
+              :nb-neighbours 1}) => 0
+  (cell-read {:state 0
+              :nb-neighbours 2}) => 0
+  (cell-read {:state 0
+              :nb-neighbours 3}) => 1
+  (cell-read {:state 0
+              :nb-neighbours 4}) => 0)
 
 (defn next-state-cell "Given a universe u and a cell with coordinate y x, compute the next state of the cell [y x] in the universe u"
   [u y x]
