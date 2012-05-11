@@ -1,6 +1,9 @@
 (ns clj-of-life.core
   (:use midje.sweet))
 
+(def alive? {1 true
+             0 false})
+
 (defn neighbours-coord
   [y x]
   (for [b [-1 0 1]
@@ -22,14 +25,6 @@
   (neighbours-state [[0 1 0]
                      [0 0 0]
                      [0 0 0]] 1 1) => [0 1 0 0 0 0 0 0])
-
-(defn alive? "Given a state of a cell, return true if the cell is considered alive, false otherwise."
-  [s]
-  (= 1 s))
-
-(fact
-  (alive? 1) => true
-  (alive? 0) => false)
 
 (defn next-state-cell "Given a universe u and a cell with coordinate y x, compute the next state of the cell [y x] in the universe u"
   [u y x]
