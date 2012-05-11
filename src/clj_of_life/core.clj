@@ -32,7 +32,7 @@
 
 (defn neighbours-state "Compute the state of the neigbours of the cell with coord [y x]"
   [u y x]
-  (map #(get-in u %) (neighbours-coord y x)))
+  (map #(get-in u % 0) (neighbours-coord y x)))
 
 (fact
   (neighbours-state [[0 1 0]
