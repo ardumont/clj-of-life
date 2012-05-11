@@ -39,16 +39,15 @@
                      [0 0 0]
                      [0 0 0]] 1 1) => [0 1 0 0 0 0 0 0])
 
-;; all possible states which renders a cell alive
 (def state-which-renders-a-cell-alive {0 {3 1}
                                        1 {2 1
                                           3 1}})
 
 (defn next-state-cell "Given a universe u and a cell with coordinate y x, compute the next state of the cell [y x] in the universe u"
   [u y x]
-  (let [cell-state (get-in u [y x])
-        nb-neighbours (count (filter alive? (neighbours-state u y x)))]
-    ((state-which-renders-a-cell-alive cell-state) nb-neighbours 0)))
+  (let [cs (get-in u [y x])
+        nb-nb (count (filter alive? (neighbours-state u y x)))]
+    ((state-which-renders-a-cell-alive cs) nb-nb 0)))
 
 (fact "next state"
   (next-state-cell [[0 1 0]
