@@ -88,9 +88,32 @@
                [0 0 0 0]]) => [[0 0 0 0]
                                [0 0 0 0]
                                [0 0 0 0]
+                               [0 0 0 0]]
+  (next-state [[0 1 1 0]
+               [0 0 0 0]
+               [0 0 0 0]
+               [0 0 0 0]]) => [[0 0 0 0]
+                               [0 0 0 0]
+                               [0 0 0 0]
+                               [0 0 0 0]]
+  (next-state [[0 1 1 0]
+               [0 1 0 0]
+               [0 0 0 0]
+               [0 0 0 0]]) => [[0 1 1 0]
+                               [0 1 1 0]
+                               [0 0 0 0]
                                [0 0 0 0]])
 
 ;; ------------------------ Side effects -------------------------
+
+;; pour les couleurs je te conseilles de tout simplement remplacer les "1" par des triplets RGB : [1 2 3]
+;; comme ca pas trop dur a changer au niveau de l'implem
+
+;; apres pour faire des moyennes de couleur c'est tout bete, tu fais la moyennes des composantes rgb, 
+;; par example, la moynne de rouge [255 0 0] et bleu [0 0 255]
+;; c'est [255/2 0/2 255/2] = [124 0 124] (violet je crois)
+;; ensuite lors de l'affichage pour tu a constructeur de couleur qui prend le rgb, donc dans ce cas : (java.awt.Color. 124 0 124)
+
 
 (def *size-cell 10)
 
