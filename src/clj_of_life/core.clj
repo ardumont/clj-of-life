@@ -10,8 +10,6 @@
 ;; - une cellule vivant ayant plus de 3 voisins meurt
 ;; - une cellule morte ayant 3 voisins devient vivante
 
-(def alive? {1 true})
-
 (defn neighbours-coord "Compute the neighbours' coordinate"
   [y x]
   (let [x- (- x 1)
@@ -33,7 +31,7 @@
 
 (defn count-neighbours-alive "Compute the state of the neigbours of the cell with coord [y x]"
   [u y x]
-  (count (filter alive? (map (fn [[y x]] (state u y x)) (neighbours-coord y x)))))
+  ((frequencies (map (fn [[y x]] (state u y x)) (neighbours-coord y x))) 1))
 
 (fact
   (count-neighbours-alive [[0 1 0]
@@ -51,7 +49,7 @@
   [u y x]
   ((state-which-renders-alive (state u y x)) (count-neighbours-alive u y x) 0))
 
-(fact "next state"
+(fact "next state-cell"
   (next-state-cell [[0 1 0]
                     [0 1 0]
                     [0 0 0]] 1 1) => 0
