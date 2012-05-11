@@ -158,11 +158,13 @@
                      *size-cell *size-cell))))))
 
 (defn game-of-life "Game of life"
-  [n]
-  (let [w (* *size-cell n)
-        h (* *size-cell n)
-        gfx (get-gfx w h)]
-    (iterate (fn [u] (let [nxt-universe (next-state u)]
-                      (do (draw gfx w h nxt-universe)
-                          (Thread/sleep 300)
-                          nxt-universe))) (random-universe n))))
+  ([n]
+     (game-of-life n (random-universe n)))
+  ([n u]
+     (let [w (* *size-cell n)
+           h (* *size-cell n)
+           gfx (get-gfx w h)]
+       (iterate (fn [u] (let [nxt-universe (next-state u)]
+                         (do (draw gfx w h nxt-universe)
+                             (Thread/sleep 300)
+                             nxt-universe))) u))))
