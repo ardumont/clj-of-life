@@ -94,9 +94,8 @@
 
 (defn random-universe "Random universe"
   [size]
-  (vec (map vec (partition-all size
-                               (for [x (range size)
-                                     y (range size)] (rand-int 2))))))
+  (partition-all size
+                 (repeatedly size #(rand-int 2))))
 
 (defn draw "Draw the game of life"
   [gfx w h u]
