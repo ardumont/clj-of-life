@@ -128,10 +128,12 @@
      (.setSize width height)
      (.setVisible true))))
 
+;; better implementation ?
 (defn random-universe "Random universe"
   [size]
-  (partition-all size
-                 (repeatedly size #(rand-int 2))))
+  (vec (map vec (partition-all size
+                               (for [y (range size)
+                                     x (range size)] (rand-int 2))))))
 
 (defn draw "Draw the game of life"
   [gfx w h u]
