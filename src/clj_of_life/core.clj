@@ -124,16 +124,17 @@
 ;; better implementation ?
 (defn random-universe "Random universe"
   [size]
-  (vec (map vec (partition-all size
-                               (for [y (range size)
-                                     x (range size)] (rand-int 2))))))
+  (vec (map vec
+            (partition-all size
+                           (for [y (range size)
+                                 x (range size)] (rand-int 2))))))
 
 (defn draw "Draw the game of life"
   [gfx w h u]
   (let [blank-color (java.awt.Color. 255 255 255)
         color {0 blank-color
                1 (java.awt.Color. 0 0 0)}
-        offset 29]
+        offset 29];; for the border drawn in gnome (do not work under stumpwm)
     (doseq [x (range (count u))
             y (range (count u))]
       (let [state (get-in u [y x])]
