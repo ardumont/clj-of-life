@@ -23,11 +23,19 @@
                      [0 0 0]
                      [0 0 0]] 1 1) => [0 1 0 0 0 0 0 0])
 
+(defn alive? "Given a state of a cell, return true if the cell is considered alive, false otherwise."
+  [s]
+  (= 1 s))
+
+(fact
+  (alive? 1) => true
+  (alive? 0) => false)
+
 (defn next-state-cell "Given a universe u and a cell with coordinate y x, compute the next state of the cell [y x] in the universe u"
   [u y x]
   (let [state (get-in u [y x])
-        nb-n (count (filter #(= 1 %) (neighbours-state u y x)))]
-    (if (= 1 state)
+        nb-n (count (filter alive? (neighbours-state u y x)))]
+    (if (alive? state)
       (cond (< nb-n 2) 0
             (<= 2 nb-n 3) 1
             :else 0)
