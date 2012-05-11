@@ -117,7 +117,8 @@
 ;; c'est [255/2 0/2 255/2] = [124 0 124] (violet je crois)
 ;; ensuite lors de l'affichage pour tu a constructeur de couleur qui prend le rgb, donc dans ce cas : (java.awt.Color. 124 0 124)
 
-(def *size-cell 10)
+(def *size-cell 10);; size of the cell
+(def *offset 29)   ;; for the border drawn in gnome (do not work under stumpwm)
 
 (defn get-gfx "Given a width and a height, returns a frame with these dimension"
   [width height]
@@ -134,29 +135,28 @@
                            (for [y (range size)
                                  x (range size)] (rand-int 2))))))
 
+(defn- draw-cell "Given a color and a cell's coordinate, draw the cell with the color col"
+  [gfx col y x]
+  (.setColor gfx col)
+  (.fillRect gfx
+             (* *size-cell x)
+             (+ *offset (* *size-cell y))
+             *size-cell *size-cell))
+
 (defn draw "Draw the game of life"
   [gfx w h u]
-  (let [blank-color (java.awt.Color. 255 255 255)
+  (let [blank-color java.awt.Color/WHITE
         color {0 blank-color
-               1 (java.awt.Color. 0 0 0)}
-        offset 29];; for the border drawn in gnome (do not work under stumpwm)
-    (doseq [x (range (count u))
-            y (range (count u))]
-      (let [state (state u y x)]
+               1 java.awt.Color/BLACK}
+        r (range (count u))]
+    (doseq [x r, y r]
+      (let [st (state u y x)]
         ;; clear the painting
-        (.setColor gfx blank-color)
-        (.fillRect gfx
-                   (* *size-cell x)
-                   (+ offset (* *size-cell y))
-                   *size-cell *size-cell)
+        (draw-cell gfx blank-color y x)
         ;; optimisation for display
-        (when (alive? state)
+        (when (= 1 st)
           ;; draw the new state if needed
-          (.setColor gfx (color state))
-          (.fillRect gfx
-                     (* *size-cell x)
-                     (+ offset (* *size-cell y))
-                     *size-cell *size-cell))))))
+          (draw-cell gfx (color st) y x))))))
 
 (defn game-of-life "Game of life"
   ([n]
