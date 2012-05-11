@@ -132,8 +132,7 @@
   [size]
   (vec (map vec
             (partition-all size
-                           (for [y (range size)
-                                 x (range size)] (rand-int 2))))))
+                           (map (fn [e] (rand-int 2)) (range (* size size)))))))
 
 (defn- draw-cell "Given a color and a cell's coordinate, draw the cell with the color col"
   [gfx col y x]
