@@ -26,32 +26,41 @@
                      [0 0 0]
                      [0 0 0]] 1 1) => [0 1 0 0 0 0 0 0])
 
+;; dispatch on the state's cell
+(defmulti cell-read :state)
+
+;; cell alive
+(defmethod cell-read 1 [{:keys [nb-neighbours]}]
+  (cond (< nb-neighbours 2)    0
+        (<= 2 nb-neighbours 3) 1
+        :else                  0))
+
+;; cell dead
+(defmethod cell-read 0 [{:keys [nb-neighbours]}]
+      (if (= 3 nb-neighbours) 1 0))
+
 (defn next-state-cell "Given a universe u and a cell with coordinate y x, compute the next state of the cell [y x] in the universe u"
   [u y x]
-  (let [state (get-in u [y x])
-        nb-n (count (filter alive? (neighbours-state u y x)))]
-    (if (alive? state)
-      (cond (< nb-n 2) 0
-            (<= 2 nb-n 3) 1
-            :else 0)
-      (if (= 3 nb-n) 1 0))))
+  (cell-read
+   {:state (get-in u [y x])
+    :nb-neighbours (count (filter alive? (neighbours-state u y x)))}))
 
 (fact "next state"
   (next-state-cell [[0 1 0]
-               [0 1 0]
-               [0 0 0]] 1 1) => 0
+                    [0 1 0]
+                    [0 0 0]] 1 1) => 0
   (next-state-cell [[0 1 1]
-               [0 1 0]
-               [0 0 0]] 1 1) => 1
+                    [0 1 0]
+                    [0 0 0]] 1 1) => 1
   (next-state-cell [[1 1 1]
-               [0 1 0]
-               [1 0 0]] 1 1) => 0
+                    [0 1 0]
+                    [1 0 0]] 1 1) => 0
   (next-state-cell [[0 1 1]
-               [0 0 0]
-               [1 0 0]] 1 1) => 1
+                    [0 0 0]
+                    [1 0 0]] 1 1) => 1
   (next-state-cell [[0 0 1]
-               [0 0 0]
-               [1 0 0]] 1 1) => 0)
+                    [0 0 0]
+                    [1 0 0]] 1 1) => 0)
 
 (defn coordinates "Compute the coordinates of the matrix"
   [u]
