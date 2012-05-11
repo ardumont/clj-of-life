@@ -1,6 +1,15 @@
 (ns clj-of-life.core
   (:use midje.sweet))
 
+;; Avoir un univers infinie 2d orthogonal.
+;; Etant donne une generation initiale.
+
+;; Les regles suivantes sont appliquees:
+;; - une cellule vivante ayant 2 ou 3 voisins reste vivante
+;; - une cellule vite ayant moins de 2 voisins vivants meurt
+;; - une cellule vivant ayant plus de 3 voisins meurt
+;; - une cellule morte ayant 3 voisins devient vivante
+
 (def alive? {1 true
              0 false})
 
