@@ -31,14 +31,17 @@
 (fact "state"
   (state [[0 1 0]] 0 1) => 1)
 
-(defn neighbours-state "Compute the state of the neigbours of the cell with coord [y x]"
+(defn count-neighbours-alive "Compute the state of the neigbours of the cell with coord [y x]"
   [u y x]
-  (map (fn [[y x]] (state u y x)) (neighbours-coord y x)))
+  (count (filter alive? (map (fn [[y x]] (state u y x)) (neighbours-coord y x)))))
 
 (fact
-  (neighbours-state [[0 1 0]
-                     [0 0 0]
-                     [0 0 0]] 1 1) => [0 1 0 0 0 0 0 0])
+  (count-neighbours-alive [[0 1 0]
+                           [0 0 0]
+                           [0 0 0]] 1 1) => 1
+  (count-neighbours-alive [[0 1 1]
+                           [0 0 1]
+                           [0 0 1]] 1 1) => 4)
 
 (def state-which-renders-alive {0 {3 1}
                                 1 {2 1
@@ -46,9 +49,7 @@
 
 (defn next-state-cell "Given a universe u and a cell with coordinate y x, compute the next state of the cell [y x] in the universe u"
   [u y x]
-  (let [cs (state u y x)
-        nb-nb (count (filter alive? (neighbours-state u y x)))]
-    ((state-which-renders-alive cs) nb-nb 0)))
+  ((state-which-renders-alive (state u y x)) (count-neighbours-alive u y x) 0))
 
 (fact "next state"
   (next-state-cell [[0 1 0]
