@@ -26,46 +26,16 @@
                      [0 0 0]
                      [0 0 0]] 1 1) => [0 1 0 0 0 0 0 0])
 
-;; dispatch on the state's cell
-(defmulti cell-read :state)
-
-;; cell alive
-(defmethod cell-read 1 [{:keys [nb-neighbours]}]
-  (cond (< nb-neighbours 2)    0
-        (<= 2 nb-neighbours 3) 1
-        :else                  0))
-
-(fact
-  (cell-read {:state 1
-              :nb-neighbours 1}) => 0
-  (cell-read {:state 1
-              :nb-neighbours 2}) => 1
-  (cell-read {:state 1
-              :nb-neighbours 3}) => 1
-  (cell-read {:state 1
-              :nb-neighbours 4}) => 0)
-
-;; cell dead
-(defmethod cell-read 0 [{:keys [nb-neighbours]}]
-      (if (= 3 nb-neighbours) 1 0))
-
-(fact
-  (cell-read {:state 0
-              :nb-neighbours 0}) => 0
-  (cell-read {:state 0
-              :nb-neighbours 1}) => 0
-  (cell-read {:state 0
-              :nb-neighbours 2}) => 0
-  (cell-read {:state 0
-              :nb-neighbours 3}) => 1
-  (cell-read {:state 0
-              :nb-neighbours 4}) => 0)
+;; all possible states which renders a cell alive
+(def state-which-renders-a-cell-alive {0 {3 1}
+                                       1 {2 1
+                                          3 1}})
 
 (defn next-state-cell "Given a universe u and a cell with coordinate y x, compute the next state of the cell [y x] in the universe u"
   [u y x]
-  (cell-read
-   {:state (get-in u [y x])
-    :nb-neighbours (count (filter alive? (neighbours-state u y x)))}))
+  (let [cell-state (get-in u [y x])
+        nb-neighbours (count (filter alive? (neighbours-state u y x)))]
+    ((state-which-renders-a-cell-alive cell-state) nb-neighbours 0)))
 
 (fact "next state"
   (next-state-cell [[0 1 0]
