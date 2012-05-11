@@ -68,9 +68,8 @@
 
 (defn coordinates "Compute the coordinates of the matrix"
   [u]
-  (let [set-rows (range (count u))]
-    (for [y set-rows
-          x set-rows] [y x])))
+  (let [rn (range (count u))]
+    (for [y rn, x rn] [y x])))
 
 (fact
   (coordinates [[0 1]
