@@ -136,8 +136,8 @@
 (defn get-gfx "Given a width and a height, returns a frame with these dimension"
   [width height]
   (.getGraphics
-   (doto (java.awt.Frame.)
-#_     (.setDefaultCloseOperation javax.swing.WindowConstants/DISPOSE_ON_CLOSE)
+   (doto (javax.swing.JFrame.)
+     (.setDefaultCloseOperation javax.swing.WindowConstants/DISPOSE_ON_CLOSE)
      (.setSize width height)
      (.setVisible true))))
 
