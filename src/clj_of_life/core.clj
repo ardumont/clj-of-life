@@ -137,7 +137,7 @@
   [width height]
   (.getGraphics
    (doto (java.awt.Frame.)
-     (.setDefaultCloseOperation javax.swing.WindowConstants/DISPOSE_ON_CLOSE)
+#_     (.setDefaultCloseOperation javax.swing.WindowConstants/DISPOSE_ON_CLOSE)
      (.setSize width height)
      (.setVisible true))))
 
