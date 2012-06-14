@@ -41,6 +41,23 @@
                            [0 0 1]
                            [0 0 1]] 1 1) => 4)
 
+(defmulti next-state "Compute the cell's next state according to its current state and its number of alive neighbours"
+  (fn [state nb-nb] [state nb-nb]))
+
+(defmethod next-state [0 3] [_ _] 1)
+(defmethod next-state [1 2] [_ _] 1)
+(defmethod next-state [1 3] [_ _] 1)
+(defmethod next-state :default [_ _] 0)
+
+(fact "state of the cell according to its current state and its number of neighbours"
+  (next-state 0 0) => 0
+  (next-state 0 1) => 0
+  (next-state 0 2) => 0
+  (next-state 0 3) => 1
+  (next-state 1 2) => 1
+  (next-state 1 3) => 1
+  (next-state 1 4) => 0)
+
 (def state-which-renders-alive {0 {3 1}
                                 1 {2 1
                                    3 1}})
