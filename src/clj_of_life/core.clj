@@ -58,13 +58,9 @@
   (next-state 1 3) => 1
   (next-state 1 4) => 0)
 
-(def state-which-renders-alive {0 {3 1}
-                                1 {2 1
-                                   3 1}})
-
 (defn next-state-cell "Given a universe u and a cell with coordinate y x, compute the next state of the cell [y x] in the universe u"
   [u y x]
-  ((state-which-renders-alive (state u y x)) (count-neighbours-alive u y x) 0))
+  (next-state (state u y x) (count-neighbours-alive u y x)))
 
 (fact "next state-cell"
   (next-state-cell [[0 1 0]
@@ -92,7 +88,7 @@
   (coordinates [[0 1]
                 [0 0]]) => [[0 0] [0 1] [1 0] [1 1]])
 
-(defn next-state "Given a universe, compute the next state of the universe"
+(defn next-state-universe "Given a universe, compute the next state of the universe"
   [u]
   (reduce
    (fn [r [y x :as c]]
@@ -101,21 +97,21 @@
    (coordinates u)))
 
 (fact
-  (next-state [[0 1 0 0]
+  (next-state-universe [[0 1 0 0]
                [0 0 0 0]
                [0 0 0 0]
                [0 0 0 0]]) => [[0 0 0 0]
                                [0 0 0 0]
                                [0 0 0 0]
                                [0 0 0 0]]
-  (next-state [[0 1 1 0]
+  (next-state-universe [[0 1 1 0]
                [0 0 0 0]
                [0 0 0 0]
                [0 0 0 0]]) => [[0 0 0 0]
                                [0 0 0 0]
                                [0 0 0 0]
                                [0 0 0 0]]
-  (next-state [[0 1 1 0]
+  (next-state-universe [[0 1 1 0]
                [0 1 0 0]
                [0 0 0 0]
                [0 0 0 0]]) => [[0 1 1 0]
@@ -182,7 +178,7 @@
      (let [w (* *size-cell n)
            h (* *size-cell n)
            gfx (get-gfx w h)]
-       (iterate (fn [u] (let [nxt-universe (next-state u)]
+       (iterate (fn [u] (let [nxt-universe (next-state-universe u)]
                          (do (draw gfx w h nxt-universe)
                              (Thread/sleep 300)
                              nxt-universe))) u))))
