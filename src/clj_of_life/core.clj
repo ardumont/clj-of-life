@@ -66,7 +66,7 @@
         r (range n)]
     (doseq [x r, y r]
       ;; clear the painting
-      (draw-cell gfx (:dead color) y x)
+      (draw-cell gfx (:dead color) x y)
       ;; optimisation for display
       (when (u [x y])
         ;; draw the new state if needed
