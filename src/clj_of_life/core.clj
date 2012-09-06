@@ -7,13 +7,10 @@
 ;; - une cellule vivante ayant plus de 3 voisins meurt
 ;; - une cellule morte ayant 3 voisins devient vivante
 
-
-(def delta [-1 0 1])
-
 (defn neighbours
   "Compute the neighbours of a cell"
   [[x y]]
-  (for [dx delta, dy delta
+  (for [dx [-1 0 1], dy [-1 0 1]
         :when (not= dx dy 0)]
     [(+ x dx)  (+ y dy)]))
 
