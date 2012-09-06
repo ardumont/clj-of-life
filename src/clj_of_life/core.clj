@@ -1,18 +1,18 @@
 (ns clj-of-life.core
   (:use midje.sweet))
 
-;; Les regles suivantes sont appliquees:
-;; - une cellule vivante ayant 2 ou 3 voisins reste vivante
-;; - une cellule vivante ayant moins de 2 voisins vivants meurt
-;; - une cellule vivante ayant plus de 3 voisins meurt
-;; - une cellule morte ayant 3 voisins devient vivante
+;; Rules:
+;; - live cell with 2 or 3 nb stays live
+;; - live cell with less than 2 dies
+;; - live cell with more than 3 dies
+;; - dead cell with 3 comes to life
 
 (defn neighbours
   "Compute the neighbours of a cell"
   [[x y]]
   (for [dx [-1 0 1], dy [-1 0 1]
         :when (not= dx dy 0)]
-    [(+ x dx)  (+ y dy)]))
+    [(+ x dx) (+ y dy)]))
 
 (defn stepper
   "Compute the new univere from the old one depending on the neighbours-fn"
