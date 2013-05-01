@@ -20,6 +20,12 @@
              (+ *offset (* *size-cell y))
              *size-cell *size-cell))
 
+(defn get-drawing-setup "A utility function to retrieve the drawing settings."
+  [rows]
+  (let [w (* rows *size-cell)
+        h (* rows *offset)]
+    (get-gfx w h)))
+
 (defn draw "Draw the game of life"
   [gfx n u]
   (let [color {:dead java.awt.Color/WHITE
