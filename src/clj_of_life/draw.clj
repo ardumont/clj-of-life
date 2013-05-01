@@ -12,7 +12,7 @@
      (.setSize width height)
      (.setVisible true))))
 
-(defn- draw-cell "Given a color and a cell's coordinate, draw the cell with the color col"
+(defn- draw-cell "Given a color and a cell's coordinate, draw the cell with the color 'col'"
   [gfx col y x]
   (.setColor gfx col)
   (.fillRect gfx
