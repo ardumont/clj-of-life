@@ -1,5 +1,6 @@
 (ns clj-of-life.core
-  (:use midje.sweet))
+  (:require [clj-of-life.draw :as d]
+            [midje.sweet :as m]))
 
 ;; Rules:
 ;; - live cell with 2 or 3 nb stays live
@@ -32,44 +33,17 @@
   (next-state-universe #{[0 1] [0 2]}) => #{}
   (next-state-universe #{[0 1] [0 2] [1 1]}) => #{[0 1] [0 2] [1 1] [1 2]})
 
-;; ------------------------ Side effects -------------------------
-
-(def *size-cell 10);; size of the cell
-(def *offset 29)   ;; for the border drawn in gnome (do not work under stumpwm)
-
-(defn get-gfx "Given a width and a height, returns a frame with these dimension"
-  [width height]
-  (.getGraphics
-   (doto (javax.swing.JFrame.)
-     (.setDefaultCloseOperation javax.swing.WindowConstants/DISPOSE_ON_CLOSE)
-     (.setSize width height)
-     (.setVisible true))))
-
 (defn random-universe "Generate a random universe of live cells"
   [size]
   (let [n (rand-int (/ (* size size) 2))]
     (set (repeatedly n (fn [] [(rand-int size) (rand-int size)])))))
 
-(defn- draw-cell "Given a color and a cell's coordinate, draw the cell with the color col"
-  [gfx col y x]
-  (.setColor gfx col)
-  (.fillRect gfx
-             (* *size-cell x)
-             (+ *offset (* *size-cell y))
-             *size-cell *size-cell))
+;; clj-of-life.core> (random-universe 10)
+;; #{[9 8] [1 2] [7 1] [9 3] [6 2] [5 2] [7 4] [4 2]}
+;; clj-of-life.core> (random-universe 10)
+;; #{[4 3] [7 6] [8 7] [1 0] [2 2] [9 9] [0 0] [1 1] [2 3] [3 4] [6 7] [7 8] [0 1] [4 6] [7 9] [0 3] [3 7] [4 8] [5 9] [0 4] [4 9] [0 5] [1 6] [3 9] [0 6] [8 0] [8 1] [9 2] [8 2] [9 3] [6 1] [7 2] [6 2] [9 6] [4 2] [6 4]}
 
-(defn draw "Draw the game of life"
-  [gfx n u]
-  (let [color {:dead java.awt.Color/WHITE
-               :live java.awt.Color/BLACK}
-        r (range n)]
-    (doseq [x r, y r]
-      ;; clear the painting
-      (draw-cell gfx (:dead color) x y)
-      ;; optimisation for display
-      (when (u [x y])
-        ;; draw the new state if needed
-        (draw-cell gfx (:live color) x y)))))
+;; ------------------------ Side effects -------------------------
 
 (defn game-of-life "Game of life"
   ([n]
@@ -77,8 +51,8 @@
   ([n u]
      (let [w (* *size-cell n)
            h (* *size-cell n)
-           gfx (get-gfx w h)]
+           gfx (d/get-gfx w h)]
        (iterate (fn [u] (let [nxt-universe (next-state-universe u)]
-                         (do (draw gfx n nxt-universe)
+                         (do (d/draw gfx n nxt-universe)
                              (Thread/sleep 300)
                              nxt-universe))) u))))
