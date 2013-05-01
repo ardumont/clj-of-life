@@ -54,7 +54,7 @@
      (game-of-life rows (random-universe rows)))
   ([rows universe]
      (let [gfx (d/get-drawing-setup rows)]
-       (iterate (fn [prev-univ] (let [nxt-universe (next-state-universe prev-univ)]
+       (iterate (fn [univ] (let [nxt-universe (next-state-universe univ)]
                          (do (d/draw gfx rows nxt-universe)
                              (Thread/sleep 300)
                              nxt-universe)))
