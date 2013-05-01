@@ -1,5 +1,4 @@
-(ns clj-of-life.draw
-  (:use midje.sweet))
+(ns clj-of-life.draw "A namespace to help in drawing the game of life")
 
 (def *size-cell 10);; size of the cell
 (def *offset 29)   ;; for the border drawn in gnome (do not work under stumpwm)
