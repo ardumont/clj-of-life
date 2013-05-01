@@ -22,9 +22,8 @@
 
 (defn get-drawing-setup "A utility function to retrieve the drawing settings."
   [rows]
-  (let [w (* rows *size-cell)
-        h (* rows *offset)]
-    (get-gfx w h)))
+  (let [wh (* rows *size-cell)]
+    (get-gfx wh wh)))
 
 (defn draw "Draw the game of life"
   [gfx n u]
