@@ -7,23 +7,22 @@
 ;; - live cell with more than 3 dies
 ;; - dead cell with 3 comes to life
 
-(defn neighbours
-  "Compute the neighbours of a cell"
-  [[x y]]
-  (for [dx [-1 0 1], dy [-1 0 1]
-        :when (not= dx dy 0)]
-    [(+ x dx) (+ y dy)]))
-
 (defn stepper
-  "Compute the new univere from the old one depending on the neighbours-fn"
+  "Compute the new universe (of live cells) from the previous one depending on the neighbours-fn function."
   [neighbours-fn]
-  (fn [alive-cells]
-    (let [freq (frequencies (mapcat neighbours-fn alive-cells))]
+  (fn [universe]
+    (let [freq (frequencies (mapcat neighbours-fn universe))]
       (set (for [[cell n] freq
                  :when (or (= n 3)
                            (and (= n 2)
-                                (alive-cells cell)))]
+                                (universe cell)))]
              cell)))))
+
+(defn neighbours
+  "Compute the neighbours of a cell"
+  [[x y]]
+  (for [dx [-1 0 1] dy [-1 0 1] :when (not= dx dy 0)]
+    [(+ x dx) (+ y dy)]))
 
 ;; one simple game of life implem
 (def next-state-universe (stepper neighbours))
