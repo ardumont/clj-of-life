@@ -42,9 +42,9 @@
   (let [n (rand-int (/ (* size size) 2))]
     (set (repeatedly n (fn [] [(rand-int size) (rand-int size)])))))
 
-;; clj-of-life.core> (random-universe 10)
+;; clj-of-life.game> (random-universe 10)
 ;; #{[9 8] [1 2] [7 1] [9 3] [6 2] [5 2] [7 4] [4 2]}
-;; clj-of-life.core> (random-universe 10)
+;; clj-of-life.game> (random-universe 10)
 ;; #{[4 3] [7 6] [8 7] [1 0] [2 2] [9 9] [0 0] [1 1] [2 3] [3 4] [6 7] [7 8] [0 1] [4 6] [7 9] [0 3] [3 7] [4 8] [5 9] [0 4] [4 9] [0 5] [1 6] [3 9] [0 6] [8 0] [8 1] [9 2] [8 2] [9 3] [6 1] [7 2] [6 2] [9 6] [4 2] [6 4]}
 
 ;; ------------------------ Side effects -------------------------
