@@ -6,4 +6,5 @@
 /.lein-failures
 /checkouts
 /.lein-deps-sum
-/target/stale/dependencies
+/target/
+/.lein-repl-history
