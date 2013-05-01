@@ -1,4 +1,4 @@
-(ns clj-of-life.game
+(ns clj-of-life.game "A namespace to compute the game of life policy"
   (:require [clj-of-life.draw :as d]
             [midje.sweet :as m]))
 
