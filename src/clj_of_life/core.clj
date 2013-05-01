@@ -25,10 +25,14 @@
   (for [dx [-1 0 1] dy [-1 0 1] :when (not= dx dy 0)]
     [(+ x dx) (+ y dy)]))
 
+(m/fact :simple-check-around-neighbours
+  (neighbours [0 0]) => (contains [-1 -1] [-1 0] [-1 1] [0 -1] [0 1] [1 -1] [1 0] [1 1] :in-any-order)
+  (neighbours [3 1]) => (contains [2 0] [2 1] [2 2] [3 0] [3 2] [4 0] [4 1] [4 2] :in-any-order))
+
 ;; one simple game of life implem
 (def next-state-universe (stepper neighbours))
 
-(fact
+(m/fact
   (next-state-universe #{[0 1]})  => #{}
   (next-state-universe #{[0 1] [0 2]}) => #{}
   (next-state-universe #{[0 1] [0 2] [1 1]}) => #{[0 1] [0 2] [1 1] [1 2]})
