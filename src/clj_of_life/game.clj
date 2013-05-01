@@ -49,14 +49,13 @@
 
 ;; ------------------------ Side effects -------------------------
 
-(defn game-of-life "Game of life"
-  ([n]
-     (game-of-life n (random-universe n)))
-  ([n u]
-     (let [w (* d/*size-cell n)
-           h (* d/*size-cell n)
-           gfx (d/get-gfx w h)]
-       (iterate (fn [u] (let [nxt-universe (next-state-universe u)]
-                         (do (d/draw gfx n nxt-universe)
+(defn game-of-life "Game of life: Given a number of rows, display a game of life with rows x rows frame."
+  ([rows]
+     (game-of-life rows (random-universe rows)))
+  ([rows universe]
+     (let [gfx (d/get-drawing-setup rows)]
+       (iterate (fn [prev-univ] (let [nxt-universe (next-state-universe prev-univ)]
+                         (do (d/draw gfx rows nxt-universe)
                              (Thread/sleep 300)
-                             nxt-universe))) u))))
+                             nxt-universe)))
+                universe))))
