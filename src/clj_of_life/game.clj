@@ -1,4 +1,4 @@
-(ns clj-of-life.core
+(ns clj-of-life.game
   (:require [clj-of-life.draw :as d]
             [midje.sweet :as m]))
 
@@ -26,8 +26,8 @@
     [(+ x dx) (+ y dy)]))
 
 (m/fact :simple-check-around-neighbours
-  (neighbours [0 0]) => (contains [-1 -1] [-1 0] [-1 1] [0 -1] [0 1] [1 -1] [1 0] [1 1] :in-any-order)
-  (neighbours [3 1]) => (contains [2 0] [2 1] [2 2] [3 0] [3 2] [4 0] [4 1] [4 2] :in-any-order))
+  (neighbours [0 0]) => (m/contains [-1 -1] [-1 0] [-1 1] [0 -1] [0 1] [1 -1] [1 0] [1 1] :in-any-order)
+  (neighbours [3 1]) => (m/contains [2 0] [2 1] [2 2] [3 0] [3 2] [4 0] [4 1] [4 2] :in-any-order))
 
 ;; one simple game of life implem
 (def next-state-universe (stepper neighbours))
@@ -53,8 +53,8 @@
   ([n]
      (game-of-life n (random-universe n)))
   ([n u]
-     (let [w (* *size-cell n)
-           h (* *size-cell n)
+     (let [w (* d/*size-cell n)
+           h (* d/*size-cell n)
            gfx (d/get-gfx w h)]
        (iterate (fn [u] (let [nxt-universe (next-state-universe u)]
                          (do (d/draw gfx n nxt-universe)
