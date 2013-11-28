@@ -7,15 +7,13 @@
 ;; - live cell with more than 3 dies
 ;; - dead cell with 3 comes to life
 
-(defn neighbours
-  "Compute the neighbours of a cell"
+(defn neighbours "Compute the neighbours of a cell"
   [[x y]]
   (for [dx [-1 0 1], dy [-1 0 1]
         :when (not= dx dy 0)]
     [(+ x dx) (+ y dy)]))
 
-(defn stepper
-  "Compute the new universe from the old one depending on the neighbours-fn"
+(defn stepper "Compute the new universe from the old one depending on the neighbours-fn"
   [neighbours-fn]
   (fn [alive-cells]
     (let [freq (frequencies (mapcat neighbours-fn alive-cells))]
@@ -65,21 +63,16 @@
                :live java.awt.Color/BLACK}
         r (range n)]
     (doseq [x r, y r]
-      ;; clear the painting
-      (draw-cell gfx (:dead color) x y)
-      ;; optimisation for display
-      (when (u [x y])
-        ;; draw the new state if needed
-        (draw-cell gfx (:live color) x y)))))
+      (draw-cell gfx (:dead color) x y)       ;; clear the painting
+      (when (u [x y])                         ;; optimisation for display
+        (draw-cell gfx (:live color) x y))))) ;; draw the new state if needed
 
 (defn game-of-life "Game of life"
-  ([n]
-     (game-of-life n (random-universe n)))
-  ([n u]
-     (let [w (* *size-cell n)
-           h (* *size-cell n)
-           gfx (get-gfx w h)]
-       (iterate (fn [u] (let [nxt-universe (next-state-universe u)]
-                         (do (draw gfx n nxt-universe)
-                             (Thread/sleep 300)
-                             nxt-universe))) u))))
+  ([n]   (game-of-life n (random-universe n)))
+  ([n u] (let [w (* *size-cell n)
+               h (* *size-cell n)
+               gfx (get-gfx w h)]
+           (iterate (fn [u] (let [nxt-universe (next-state-universe u)]
+                             (do (draw gfx n nxt-universe)
+                                 (Thread/sleep 300)
+                                 nxt-universe))) u))))
