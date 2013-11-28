@@ -7,14 +7,12 @@
 ;; - live cell with more than 3 dies
 ;; - dead cell with 3 comes to life
 
-(defn neighbours "Compute the neighbours of a cell"
-  [[x y]]
+(defn neighbours "Compute the neighbours of a cell" [[x y]]
   (for [dx [-1 0 1], dy [-1 0 1]
         :when (not= dx dy 0)]
     [(+ x dx) (+ y dy)]))
 
-(defn stepper "Compute the new universe from the old one depending on the neighbours-fn"
-  [neighbours-fn]
+(defn stepper "Compute the new universe from the old one depending on the neighbours-fn" [neighbours-fn]
   (fn [alive-cells]
     (let [freq (frequencies (mapcat neighbours-fn alive-cells))]
       (set (for [[cell n] freq
@@ -36,29 +34,25 @@
 (def *size-cell 10);; size of the cell
 (def *offset 29)   ;; for the border drawn in gnome (do not work under stumpwm)
 
-(defn get-gfx "Given a width and a height, returns a frame with these dimension"
-  [width height]
+(defn get-gfx "Given a width and a height, returns a frame with these dimension" [width height]
   (.getGraphics
    (doto (javax.swing.JFrame.)
      (.setDefaultCloseOperation javax.swing.WindowConstants/DISPOSE_ON_CLOSE)
      (.setSize width height)
      (.setVisible true))))
 
-(defn random-universe "Generate a random universe of live cells"
-  [size]
+(defn random-universe "Generate a random universe of live cells" [size]
   (let [n (rand-int (/ (* size size) 2))]
     (set (repeatedly n (fn [] [(rand-int size) (rand-int size)])))))
 
-(defn- draw-cell "Given a color and a cell's coordinate, draw the cell with the color col"
-  [gfx col y x]
+(defn- draw-cell "Given a color and a cell's coordinate, draw the cell with the color col" [gfx col y x]
   (.setColor gfx col)
   (.fillRect gfx
              (* *size-cell x)
              (+ *offset (* *size-cell y))
              *size-cell *size-cell))
 
-(defn draw "Draw the game of life"
-  [gfx n u]
+(defn draw "Draw the game of life" [gfx n u]
   (let [color {:dead java.awt.Color/WHITE
                :live java.awt.Color/BLACK}
         r (range n)]

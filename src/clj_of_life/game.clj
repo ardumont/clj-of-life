@@ -8,9 +8,7 @@
 ;; - live cell with more than 3 dies
 ;; - dead cell with 3 comes to life
 
-(defn stepper
-  "Compute the new universe (of live cells) from the previous one depending on the neighbours-fn function."
-  [neighbours-fn]
+(defn stepper "Compute the new universe (of live cells) from the previous one depending on the neighbours-fn function." [neighbours-fn]
   (fn [universe]
     (let [freq (frequencies (mapcat neighbours-fn universe))]
       (set (for [[cell n] freq
@@ -19,9 +17,7 @@
                                 (universe cell)))]
              cell)))))
 
-(defn neighbours
-  "Compute the neighbours of a cell"
-  [[x y]]
+(defn neighbours "Compute the neighbours of a cell" [[x y]]
   (for [dx [-1 0 1] dy [-1 0 1] :when (not= dx dy 0)]
     [(+ x dx) (+ y dy)]))
 
@@ -50,12 +46,10 @@
 ;; ------------------------ Side effects -------------------------
 
 (defn game-of-life "Game of life: Given a number of rows, display a game of life with rows x rows frame."
-  ([rows]
-     (game-of-life rows (random-universe rows)))
-  ([rows universe]
-     (let [gfx (d/get-drawing-setup rows)]
-       (iterate (fn [univ] (let [nxt-universe (next-state-universe univ)]
-                         (do (d/draw gfx rows nxt-universe)
-                             (Thread/sleep 300)
-                             nxt-universe)))
-                universe))))
+  ([rows]          (game-of-life rows (random-universe rows)))
+  ([rows universe] (let [gfx (d/get-drawing-setup rows)]
+                     (iterate (fn [univ] (let [nxt-universe (next-state-universe univ)]
+                                          (do (d/draw gfx rows nxt-universe)
+                                              (Thread/sleep 300)
+                                              nxt-universe)))
+                              universe))))
